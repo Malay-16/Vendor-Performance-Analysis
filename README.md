@@ -1,287 +1,242 @@
-Vendor Performance Analysis is a retail analytics project where sales, inventory, purchase, and vendor data were analyzed to identify the most profitable vendors, optimize inventory levels, reduce supplier dependency, and improve purchasing strategies. The project uses SQL for ETL, Python for analysis, and Power BI for dashboarding.
+# 🧾 Vendor Performance Analysis
 
-Business Problem
+## 📌 Project Overview
 
-Imagine a retail company buying products from hundreds of vendors.
+Vendor Performance Analysis is an end-to-end retail analytics project designed to evaluate vendor efficiency, inventory performance, purchasing effectiveness, and profitability. The project integrates sales, purchase, inventory, and vendor data to generate actionable business insights that support strategic decision-making.
 
-Management wants to know:
+Using SQL for data integration, Python for data analysis and statistical validation, and Power BI for interactive visualization, this project helps identify high-performing vendors, optimize inventory levels, reduce supplier dependency risks, and improve purchasing strategies.
 
-Which vendors generate the most sales?
-Which vendors generate the most profit?
-Which products are not selling?
-Are we over-dependent on a few vendors?
-Does bulk purchasing save money?
-Which vendors have poor inventory turnover?
+---
 
-These are the questions this project answers.
+## 🎯 Business Problem
 
-Project Workflow
-Step 1: Data Ingestion
+Retail organizations often work with hundreds of vendors and thousands of products, making it challenging to monitor profitability and inventory performance effectively.
 
-Multiple CSV files are loaded into a SQLite database.
+This project addresses key business questions:
 
-Files include:
+* Which vendors contribute the most to sales and profits?
+* Which products have low sales despite high profit margins?
+* Are there vendors with poor inventory turnover?
+* Is the business overly dependent on a small group of suppliers?
+* How much cost advantage does bulk purchasing provide?
+* How can inventory and purchasing decisions be optimized?
 
-Sales Data
-Purchase Data
-Vendor Invoice Data
-Purchase Price Data
-Inventory Data
+The objective is to improve profitability, reduce operational inefficiencies, and support data-driven vendor management decisions.
 
-The script automatically reads every CSV and stores it as a database table.
+---
 
-Interview Answer
+## ⚙️ Project Workflow
 
-First, I created an ETL pipeline where all raw CSV files were ingested into a SQLite database using Python and SQLAlchemy. This centralized the data and made querying more efficient.
+### 1. Data Ingestion & ETL
 
-Step 2: Data Integration
+* Imported multiple CSV datasets into a SQLite database using Python and SQLAlchemy.
+* Built an automated ETL pipeline to centralize data and improve query performance.
+* Loaded datasets including:
 
-The project combines multiple tables using SQL.
+  * Sales Data
+  * Purchase Data
+  * Vendor Invoice Data
+  * Purchase Price Data
+  * Inventory Data
 
-The script creates:
+---
 
-Freight Summary
+### 2. Data Integration
 
-Calculates total freight cost per vendor.
+Created a consolidated Vendor Sales Summary table using SQL joins and aggregations.
 
-Purchase Summary
+The process involved:
 
-Calculates:
+#### Freight Summary
 
-Purchase Quantity
-Purchase Dollars
-Purchase Price
-Sales Summary
+* Calculated total freight cost for each vendor.
 
-Calculates:
+#### Purchase Summary
 
-Sales Quantity
-Sales Revenue
-Sales Price
-Excise Tax
+* Total Purchase Quantity
+* Total Purchase Cost
+* Purchase Price Analysis
 
-All summaries are joined together into one master table called:
+#### Sales Summary
 
-Vendor Sales Summary
+* Total Sales Quantity
+* Total Sales Revenue
+* Total Sales Price
+* Total Excise Tax
 
-Step 3: Feature Engineering
+All datasets were merged into a single analytical table for further analysis.
 
-New business KPIs are created.
+---
 
-Gross Profit
+### 3. Feature Engineering
 
-Profit earned by the company.
+Developed key business KPIs to evaluate vendor and inventory performance:
 
-Formula:
+| KPI                     | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| Gross Profit            | Revenue generated after deducting purchase costs |
+| Profit Margin (%)       | Percentage profitability of products/vendors     |
+| Stock Turnover          | Measures inventory movement efficiency           |
+| Sales-to-Purchase Ratio | Evaluates purchasing effectiveness               |
 
-GrossProfit=TotalSalesDollars−TotalPurchaseDollars
+These metrics enabled deeper profitability and operational analysis.
 
-Profit Margin
+---
 
-Measures profitability percentage.
+### 4. Data Cleaning & Preparation
 
-ProfitMargin=
-TotalSalesDollars
-GrossProfit
-	​
+To ensure reliable analysis:
 
-×100
+* Handled missing values
+* Corrected data types
+* Removed unwanted spaces and inconsistencies
+* Filtered invalid records
 
-Stock Turnover
+Excluded:
 
-Shows how fast inventory is sold.
+* Loss-making transactions
+* Negative profit margins
+* Products with zero sales activity
 
-StockTurnover=
-TotalPurchaseQuantity
-TotalSalesQuantity
-	​
+---
 
+### 5. Exploratory Data Analysis (EDA)
 
-Sales-to-Purchase Ratio
+Key observations:
 
-Shows efficiency of purchases.
+#### Loss-Making Products
 
-SalesToPurchaseRatio=
-TotalPurchaseDollars
-TotalSalesDollars
-	​
+* Identified products generating negative gross profit.
+* Lowest observed gross profit: **-$52,002**
 
+#### Unsold Inventory
 
-These KPIs are generated in Python.
+* Products with purchases but no corresponding sales.
+* Indicated slow-moving or obsolete inventory.
 
-Step 4: Data Cleaning
+#### Freight Cost Variability
 
-The project:
+* Freight costs ranged from **$0.09 to $257,032**
+* Suggested logistics and transportation inefficiencies.
 
-Removes missing values
-Fixes data types
-Removes extra spaces
-Filters invalid records
+#### Correlation Analysis
 
-Specifically removed:
+* Purchase Quantity vs Sales Quantity showed a correlation of **0.999**
+* Demonstrated strong inventory demand alignment.
 
-Negative Profit
-Negative Profit Margin
-Products with Zero Sales
+---
 
-This improves analysis quality.
+## 📊 Key Business Insights
 
-Step 5: Exploratory Data Analysis
+### 1. High-Margin Brands with Low Sales
 
-The analysis discovered:
+* Identified **198 brands** generating high profit margins but low sales volume.
+* Opportunity to increase revenue through:
 
-Problem 1: Loss-Making Products
+  * Targeted promotions
+  * Marketing campaigns
+  * Strategic pricing adjustments
 
-Some products had:
+---
 
-Gross Profit = -$52,002
+### 2. Vendor Dependency Risk
 
-Meaning products were sold below cost.
+* Top 10 vendors accounted for **65.69% of total purchases**.
+* Heavy reliance on a limited supplier base creates supply-chain risks.
 
-Problem 2: Unsold Inventory
+**Recommendation:** Diversify vendor partnerships to improve resilience.
 
-Many products had:
+---
 
-Purchase Quantity > 0
-Sales Quantity = 0
+### 3. Impact of Bulk Purchasing
 
-Meaning inventory was sitting in warehouses.
+* Large purchase orders achieved an average unit cost of **$10.78**.
+* Approximately **72% lower cost per unit** compared to smaller orders.
 
-Problem 3: High Freight Cost Variability
+**Recommendation:** Leverage bulk purchasing agreements to maximize savings.
 
-Freight costs ranged from:
+---
 
-$0.09
-to $257,032
+### 4. Inventory Optimization Opportunity
 
-Suggesting logistics inefficiencies.
+* Identified **$2.71 Million** worth of unsold inventory.
 
-Step 6: Correlation Analysis
+Business impact:
 
-The project examined relationships between variables.
+* Increased storage costs
+* Reduced cash flow efficiency
+* Higher inventory holding risk
 
-Key finding:
+**Recommendation:** Implement clearance strategies and improve demand forecasting.
 
-Purchase Quantity vs Sales Quantity
+---
 
-Correlation = 0.999
+### 5. Vendor Profitability Analysis
 
-Meaning products purchased in larger quantities generally sold more.
+| Vendor Category        | Average Profit Margin |
+| ---------------------- | --------------------- |
+| Top Vendors            | 31.17%                |
+| Low-Performing Vendors | 41.55%                |
 
-Major Business Findings
-Finding 1
-198 Brands Need Promotion
+Observation:
 
-These brands:
+* Low-performing vendors achieved higher margins but struggled with sales volume.
+* Indicates potential pricing, visibility, or distribution challenges.
 
-Have high profit margins
-Have low sales
+---
 
-Meaning they are profitable but customers aren't buying enough.
+## 📈 Statistical Validation
 
-Recommendation:
+Performed hypothesis testing to validate profitability differences between vendor groups.
 
-Marketing campaigns
-Discounts
-Product promotions
+### Hypotheses
 
-Finding 2
-Vendor Dependency Risk
+**H₀ (Null Hypothesis):**
+No significant difference exists in profit margins between vendor categories.
 
-Top 10 vendors contribute:
+**H₁ (Alternative Hypothesis):**
+A significant difference exists in profit margins between vendor categories.
 
-65.69% of total purchases
+### Result
 
-Risk:
+The null hypothesis was rejected, confirming that vendor groups operate under significantly different profitability models.
 
-If one major supplier fails, business operations may be affected.
+---
 
-Recommendation:
+## 📊 Power BI Dashboard
 
-Diversify suppliers.
+The interactive dashboard provides:
 
-Finding 3
-Bulk Purchasing Saves Money
+* Vendor Sales Analysis
+* Vendor Profitability Tracking
+* Inventory Turnover Monitoring
+* Bulk Purchase Savings Analysis
+* Vendor Contribution Breakdown
+* Unsold Inventory Insights
 
-Large orders cost:
+The dashboard enables stakeholders to make faster and more informed purchasing and inventory decisions.
 
-$10.78 per unit
+---
 
-Compared to much higher costs in small orders.
+## 🛠️ Tools & Technologies
 
-Result:
+* Python (Pandas, NumPy, SciPy)
+* SQL (SQLite)
+* SQLAlchemy
+* Power BI
+* Matplotlib & Seaborn
+* Jupyter Notebook
+* Git & GitHub
 
-Approximately 72% cost savings.
+---
 
-Recommendation:
+## 🚀 Business Impact
 
-Negotiate bulk-purchase contracts.
+This project demonstrates how data analytics can be used to:
 
-Finding 4
-Unsold Inventory Worth $2.71 Million
-
-Huge amount of money is locked in inventory.
-
-Problems:
-
-Higher storage costs
-Lower cash flow
-Inventory risk
-
-Recommendation:
-
-Clearance sales
-Better demand forecasting
-Reduce future purchase quantities
-
-Finding 5
-Profitability Comparison
-
-Top Vendors:
-
-Average Margin = 31.17%
-
-Low Performing Vendors:
-
-Average Margin = 41.55%
-
-Interesting insight:
-
-Low-performing vendors earn higher margins but sell less.
-
-This suggests pricing or marketing issues.
-
-Statistical Testing
-
-The project also performs hypothesis testing.
-
-Null Hypothesis (H₀)
-
-No difference in profit margins between vendor groups.
-
-Alternative Hypothesis (H₁)
-
-Profit margins differ.
-
-Result:
-
-H₀ rejected.
-
-Meaning:
-
-Vendor groups follow different profitability strategies.
-
-This is an advanced analytics component that recruiters like.
-
-Power BI Dashboard
-
-The dashboard visualizes:
-
-Vendor Sales
-Vendor Profitability
-Inventory Turnover
-Bulk Purchase Savings
-Vendor Contribution %
-Unsold Inventory Analysis
-
-allowing management to make decisions quickly.
+* Improve vendor management strategies
+* Reduce supplier concentration risk
+* Optimize inventory investment
+* Increase profitability
+* Support data-driven purchasing decisions
+* Enhance overall operational efficiency
